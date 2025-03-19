@@ -80,12 +80,34 @@ const getCurrentweight = async (req, res) => {
         }); 
     };
 };
+const getMaxid = async (req, res) => {
+    
+    const sqlcommand = `
+        SELECT COALESCE(MAX(id), 0) + 1 AS Maxid FROM public."Round_Transport_Log";
+    
+    `;
+    try {
+        const result = await dbconnect.query(sqlcommand);  
+        res.status(200).json({
+            data: result?.rows ?? 0,
+            success: true,
+            msg: "Query Successfull"
+        }); 
+    } catch (error) {
+        console.log("Database error:", error); 
+        res.status(500).json({
+            msg: "Internal Server Error" ,
+            success: false
+        }); 
+    };
+};
 
 
 module.exports = {
     getRoundtransportwithsstatusid,
     getDepartmentid,
     getTypeid,
-    getCurrentweight
+    getCurrentweight,
+    getMaxid
 
 }

@@ -4,13 +4,20 @@ const getRoundtransportlogs = async (req, res) => {
     const sqlcommand = 
     `
     SELECT 
-        "Round_Transport"."Round_Name", "Round_Transport"."Max_Weight",
+        "Round_Transport"."Round_Name", "Round_Transport"."Max_Weight", "Round_Transport"."id" AS "Round_id", "Round_Transport"."Date_Open",  "Round_Transport"."Date_Close",
         "Round_Transport_Log"."id", "Round_Transport_Log"."Weight", "Round_Transport_Log"."Date",
         "Department"."Department_Name",
         "Type"."Type_Name",
         "Status"."Status_Name" AS "Status_Name",
         "Area"."Area" AS "Area",
-        "Concern_Person"."Name" AS "Concern_Person"
+        "Concern_Person"."Name" AS "Concern_Person",
+       
+        SUM("Round_Transport_Log"."Weight") OVER (
+            PARTITION BY "Round_Transport"."id" 
+            ORDER BY "Round_Transport_Log"."id" 
+            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+        ) AS "Cumulative_Weight"
+
     FROM 
         "Round_Transport_Log"
     LEFT JOIN 
@@ -218,7 +225,7 @@ const updateRoundtransportlog = async (req, res) =>{
         res.status(200).json({
             data: result.rows,
             success: true,
-            msg: `อัพเดทส่งสำเร็จ ${Round_ID}` 
+            msg: `อัพเดทส่งสำเร็จ` 
         }); 
     } catch (error) {
         console.log("Database error:", error); 
