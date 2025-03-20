@@ -215,9 +215,8 @@ const postRoundtransportlog = async (req, res) => {
 const updateRoundtransportlog = async (req, res) =>{
     const id = req.params.id;
     const {Round_ID, Concern_Person, Department_ID, Type_ID, Weight, Area} = req.body;
-
-    console.log("id", id)
-    console.log(" req.body",  req.body)
+    // console.log("id", id)
+    // console.log(" req.body",  req.body)
     const sqlcommand = `UPDATE "Round_Transport_Log" SET "Round_ID" = $1, "Concern_Person" = $2, "Department_ID" = $3 , "Type_ID" = $4, "Weight" = $5, "Area" = $6 WHERE id = $7 RETURNING *`;
     values = [Round_ID, Concern_Person, Department_ID, Type_ID, Weight, Area, id]
     try {
