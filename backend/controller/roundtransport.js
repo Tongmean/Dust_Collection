@@ -52,6 +52,7 @@ const postRoundtransport = async (req, res) =>{
     const {Round_Name, Max_Weight, Status_ID} = req.body;
     const sqlcommand = `INSERT INTO "Round_Transport" ("Round_Name", "Max_Weight", "Status_ID")  VALUES ($1, $2, $3) RETURNING *`;
     values = [Round_Name, Max_Weight, Status_ID];
+    console.log('Round_Name, Max_Weight, Status_ID',Round_Name, Max_Weight, Status_ID)
     try {
         const result = dbconnect.query(sqlcommand, values)
         res.status(200).json({

@@ -57,7 +57,6 @@ const postType = async (req, res) =>{
     }
 }
 
-
 const updateType = async (req, res) =>{
     const {Type_Name} = req.body;
     const id = req.params.id;

@@ -24,6 +24,7 @@ app.use('/api/area', areaRoute)
 //Listen require
 app.listen(port, host,  (req, res)=>{
 
+    
     console.log(`Backend running at http://${host}:${port}`);
     console.log("Server run on port:", port);
 })
