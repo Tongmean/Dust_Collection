@@ -256,7 +256,7 @@ const postRoundtransportlog = async (req, res) => {
         res.status(200).json({
             data: result.rows,
             success: true,
-            msg: `สร้างรอบข่นส่งสำเร็จ ${Weight}`,
+            msg: `คุณได้บันทึกน้ำหนักจำนวน ${Weight} สำเร็จแล้ว ครับ`,
         });
     } catch (error) {
         console.log("Database error:", error);
@@ -278,7 +278,7 @@ const updateRoundtransportlog = async (req, res) =>{
     const sqlcommand = `UPDATE "Round_Transport_Log" SET "Round_ID" = $1, "Concern_Person" = $2, "Department_ID" = $3 , "Type_ID" = $4, "Weight" = $5, "Area" = $6 WHERE id = $7 RETURNING *`;
     values = [Round_ID, Concern_Person, Department_ID, Type_ID, Weight, Area, id]
     try {
-        const result = dbconnect.query(sqlcommand, values);
+        const result = await dbconnect.query(sqlcommand, values);
         res.status(200).json({
             data: result.rows,
             success: true,

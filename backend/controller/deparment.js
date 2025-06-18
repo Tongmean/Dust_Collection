@@ -42,7 +42,7 @@ const postDepartment = async (req, res) =>{
     const sqlcommand = `INSERT INTO "Department" ("Department_Name") VALUES ($1) RETURNING *`;
     values = [Department_Name];
     try {
-        const result = dbconnect.query(sqlcommand, values);
+        const result = await dbconnect.query(sqlcommand, values);
         res.status(200).json({
             data: result.rows,
             success: true,
@@ -64,7 +64,7 @@ const updateDepartment = async (req, res) =>{
     const sqlcommand = `UPDATE "Department" SET "Department_Name" = $1  WHERE id = $2 RETURNING *`;
     values = [Department_Name, id]
     try {
-        const result = dbconnect.query(sqlcommand, values);
+        const result = await dbconnect.query(sqlcommand, values);
         res.status(200).json({
             data: result.rows,
             success: true,

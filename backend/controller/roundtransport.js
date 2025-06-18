@@ -1,18 +1,33 @@
 const dbconnect = require('../middleware/Dbconnect');
 
 const getRoundtransports = async (req, res) => {
+    // const sqlcommand = `
+    // SELECT 
+    //     * ,
+    //     "Round_Transport"."id" AS "id_Round_Transport"
+    // FROM 
+    //     "Round_Transport"
+    // LEFT JOIN 
+    //     "Status"
+    // ON
+    //     "Status".id = "Round_Transport"."Status_ID" 
+    
+    // `;
     const sqlcommand = `
-    SELECT 
-        * ,
+        SELECT 
+        ROW_NUMBER() OVER (ORDER BY "Round_Transport"."id") AS "Running_No",
+        "Round_Transport".*,
+        "Status".*,
         "Round_Transport"."id" AS "id_Round_Transport"
     FROM 
         "Round_Transport"
     LEFT JOIN 
         "Status"
     ON
-        "Status".id = "Round_Transport"."Status_ID" 
+        "Status"."id" = "Round_Transport"."Status_ID";
     
     `;
+
     try {
         const result = await dbconnect.query(sqlcommand);  
         res.status(200).json({
@@ -54,7 +69,7 @@ const postRoundtransport = async (req, res) =>{
     values = [Round_Name, Max_Weight, Status_ID];
     console.log('Round_Name, Max_Weight, Status_ID',Round_Name, Max_Weight, Status_ID)
     try {
-        const result = dbconnect.query(sqlcommand, values)
+        const result = await dbconnect.query(sqlcommand, values)
         res.status(200).json({
             data: result.rows,
             success: true,
@@ -76,7 +91,7 @@ const updateRoundtransport = async (req, res) =>{
     const sqlcommand = `UPDATE "Round_Transport" SET "Round_Name" = $1, "Max_Weight" = $2, "Status_ID" = $3 WHERE id = $4 RETURNING *`;
     const values = [Round_Name, Max_Weight, Status_ID, id]
     try {
-        const result = dbconnect.query(sqlcommand, values);
+        const result = await dbconnect.query(sqlcommand, values);
         res.status(200).json({
             data: result.rows,
             success: true,
@@ -94,8 +109,8 @@ const deleteroundidandlog = async (req, res) =>{
     const id = req.params.id
     console.log('id',id)
     try {
-        const resultRoundlogdelete = dbconnect.query(`DELETE FROM "Round_Transport_Log" WHERE "Round_ID" = $1`, [id]);
-        const resultRounddelete = dbconnect.query(`DELETE FROM "Round_Transport" WHERE id = $1`, [id]);
+        const resultRoundlogdelete = await dbconnect.query(`DELETE FROM "Round_Transport_Log" WHERE "Round_ID" = $1`, [id]);
+        const resultRounddelete = await dbconnect.query(`DELETE FROM "Round_Transport" WHERE id = $1`, [id]);
         res.status(200).json({
             data: resultRounddelete.rows,
             date1:resultRoundlogdelete,

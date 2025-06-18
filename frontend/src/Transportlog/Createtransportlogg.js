@@ -144,6 +144,7 @@ const CreateRoundtransportlog = () => {
         <>
             <div className="container-fluid">
                 <h2>แบบฟอร์มบันทึกข้อมูลฝุ่น</h2>
+                <p className='text-danger'>(กรุณา: เลือก ชื่อ Box No ให้ถูกต้อง)</p>
                 <Form
                     form={form}
                     layout="vertical"

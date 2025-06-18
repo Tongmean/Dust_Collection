@@ -33,6 +33,7 @@ const RoundTransport = () => {
                 Round_Name: i.Round_Name,
                 Max_Weight: i.Max_Weight,
                 Status: i.Status_Name,
+                Running_No: i.Running_No,
                 Date_Open: i.Date_Open ? convertToUTC7(i.Date_Open) : null,
                 Date_Close: i.Date_Close ? convertToUTC7(i.Date_Close) : null,
 
@@ -46,7 +47,7 @@ const RoundTransport = () => {
     };
 
     const columnDefs = [
-        { headerName: 'เลขที่', field: 'id', checkboxSelection: true, headerCheckboxSelection: true, filter: "agTextColumnFilter" },
+        { headerName: 'เลขที่', field: 'Running_No', checkboxSelection: true, headerCheckboxSelection: true, filter: "agTextColumnFilter" },
         { headerName: 'Round Name', field: 'Round_Name' },
         { headerName: 'Max Weight (Kg)', field: 'Max_Weight' },
         { headerName: 'Status', field: 'Status' },
@@ -76,7 +77,7 @@ const RoundTransport = () => {
     const handleSave = async (values) => {
         await createRoundtransport(values);
         setIsModalOpen(false);
-        loadData();
+        await loadData();
     };
 
     const handleShowEdit = (data) => {
@@ -117,7 +118,7 @@ const RoundTransport = () => {
         try {
             await deleteRoundtransport(selectedData.id);
             setIsDeleteModalOpen(false);
-            loadData();
+            await loadData();
         } catch (error) {
             console.log(error)
         } finally {
